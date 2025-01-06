@@ -1,0 +1,38 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+        colors = true       # Enable colored output for i3status bar.
+        interval = 5        # Set the update interval for i3status in seconds.
+}
+
+# Order of the displayed items in the i3status bar
+order += "disk /"          # Displays available disk space on root ("/").
+order += "battery all"      # Displays the battery status.
+order += "load"             # Displays system load (average CPU load over time).
+order += "tztime local"     # Displays the local time.
+
+# Battery configuration
+battery all {
+        format = "%status %percentage %remaining"  # Shows battery status, percentage, and remaining time.
+}
+
+# Time and date configuration
+tztime local {
+        format = "%Y-%m-%d %H:%M:%S"  # Formats the date and time.
+}
+
+# CPU load configuration
+load {
+        format = "%1min"    # Shows the 1-minute average load of the system.
+}
+
+# Disk usage configuration for root
+disk "/" {
+        format = "%avail"   # Shows available disk space in the root ("/") partition.
+}

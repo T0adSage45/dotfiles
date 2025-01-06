@@ -1,0 +1,5 @@
+export XDG_CONFIG_HOME=$HOME/.config
+VIM="nvim"
+# Where should I put you?
+bindkey -s ^f "~/.config/tmux/tmux-sessionizer\n"
+

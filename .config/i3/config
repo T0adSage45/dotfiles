@@ -1,0 +1,192 @@
+# i3 config file (v4)
+# 完全なリファレンスについては、http://i3wm.org/docs/userguide.html を参照してください！
+
+# Modキーを設定 (Mod1はAltキー)
+set $mod Mod1
+
+# すべてのウィンドウに2ピクセルのボーダーを設定
+for_window [class="^.*"] border pixel 2
+
+# ------------------------------------------
+# スタートアップアプリケーション
+# ------------------------------------------
+# ランダム壁紙スクリプトを実行
+exec --no-startup-id ~/bin/set_random_wallpaper.sh
+#exec --no-startup-id screenkey
+
+# ネットワークマネージャーのアイコンを表示
+exec --no-startup-id nm-applet
+# 自動タイルのスクリプトを実行
+exec --no-startup-id autotiling
+# Picomでコンポジタを実行
+#exec --no-startup-id picom --config ~/.config/picom/picom.conf
+
+# ランダム壁紙スクリプトを再実行
+bindsym $mod+ctrl+r exec --no-startup-id ~/bin/set_random_wallpaper.sh
+
+# ウィンドウタイトルのフォントサイズを設定 (サイズ5)
+font pango:DejaVu Sans Mono 5
+
+# Mod+マウスでフローティングウィンドウをドラッグ
+floating_modifier $mod
+
+# ------------------------------------------
+# 基本的なキー操作
+# ------------------------------------------
+# ターミナル (Alacritty) を起動
+bindsym $mod+Return exec alacritty
+
+# brave (browsers)
+bindsym $mod+b exec brave --incognito
+bindsym $mod+Shift+b exec brave
+
+# フォーカスされたウィンドウを閉じる
+bindsym $mod+Shift+q kill
+
+# dmenu (プログラムランチャー) を起動
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+# ウィンドウ間でフォーカスを切り替える
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# フォーカスされたウィンドウを移動
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# 水平方向と垂直方向にウィンドウを分割
+bindsym $mod+z split h
+bindsym $mod+v split v
+
+# フルスクリーンのトグル
+bindsym $mod+f fullscreen toggle
+
+# コンテナのレイアウトを変更
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# タイリング / フローティングのトグル
+bindsym $mod+Shift+space floating toggle
+
+# ------------------------------------------
+# ワークスペース操作
+# ------------------------------------------
+# ワークスペースを切り替える
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# フォーカスされたコンテナを別のワークスペースに移動
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# ------------------------------------------
+# 設定と再起動
+# ------------------------------------------
+# コンフィグファイルを再読み込み
+bindsym $mod+Shift+c reload
+
+# i3を再起動 (レイアウトとセッションを保持)
+bindsym $mod+Shift+r restart
+
+# i3を終了してXセッションからログアウト
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m '終了ショートカットが押されました。i3を終了してよろしいですか？これによりXセッションが終了します。' -b 'はい、i3を終了' 'i3-msg exit'"
+
+# ------------------------------------------
+# ウィンドウのリサイズ
+# ------------------------------------------
+# リサイズモードの定義
+mode "resize" {
+    bindsym h resize shrink width 2 px or 2 ppt
+    bindsym j resize grow height 2 px or 2 ppt
+    bindsym k resize shrink height 2 px or 2 ppt
+    bindsym l resize grow width 2 px or 2 ppt
+
+    bindsym Left resize shrink width 2 px or 2 ppt
+    bindsym Down resize grow height 2 px or 2 ppt
+    bindsym Up resize shrink height 2 px or 2 ppt
+    bindsym Right resize grow width 2 px or 2 ppt
+
+    # リサイズモードを終了してデフォルトに戻る
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# リサイズモードに切り替え
+bindsym $mod+r mode "resize"
+
+# ------------------------------------------
+# i3bar (ワークスペースバー) を起動
+# ------------------------------------------
+bar {
+    # ステータスコマンドにi3statusを使用
+    status_command i3status
+    tray_output primary
+}
+
+# ------------------------------------------
+# カスタムキー設定
+# ------------------------------------------
+# PulseAudio音量コントロール
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# 画面の明るさコントロール
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# サスペンド
+bindsym $mod+Shift+period exec systemctl suspend
+
+# ------------------------------------------
+# カラー設定 (Rosé Pineテーマ)
+# ------------------------------------------
+set $base           #191724
+set $surface        #1f1d2e
+set $overlay        #26233a
+set $muted          #6e6a86
+set $subtle         #908caa
+set $text           #e0def4
+set $love           #eb6f92
+set $gold           #f6c177
+set $rose           #ebbcba
+set $pine           #31748f
+set $foam           #9ccfd8
+set $iris           #c4a7e7
+set $highlightlow   #21202e
+set $highlightmed   #403d52
+set $highlighthigh  #524f67
+
+# ------------------------------------------
+# ウィンドウのテーマ設定
+# ------------------------------------------
+# タイトル/背景/テキスト/インジケータ/ボーダー
+client.focused           $rose     $base $text  $rose      $rose
+client.focused_inactive  $text     $base $text  $subtle    $surface
+client.unfocused         $text     $base $text  $overlay   $overlay
+client.urgent            $text     $base $text  $love      $love
+client.background        $base
+
+# ウィンドウのタイトルバーを削除
+for_window [class=".*"] title_format ""
